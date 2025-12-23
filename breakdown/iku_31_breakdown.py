@@ -3,9 +3,8 @@
 IKU 31 BREAKDOWN: Tridharma di PT Lain
 ============================================================================
 Visualisasi breakdown untuk IKU 31 (Charts Terpisah):
-1. Top 15 Dosen Paling Aktif
-2. Pie Chart: Penelitian vs Pengabdian
-3. Statistik Summary
+1. Dosen Annotated - Bar chart dengan nama dosen per prodi
+2. Statistik Summary - Top kegiatan dan jenis kegiatan
 ============================================================================
 """
 
@@ -124,86 +123,97 @@ def create_iku_31_statistik(df_pembilang, df_penyebut):
 
     return saved_files
 
-def create_iku_31_dosen_showcase(df_pembilang, df_penyebut):
-    """Chart 3: Showcase Dosen Aktif - Visual Card Style"""
+def create_iku_31_dosen_annotated(df_pembilang, df_penyebut):
+    """Chart: Bar Chart dengan Nama Dosen Aktif per Prodi"""
 
-    # Merge untuk mendapatkan jurusan
-    df_merged = df_pembilang.merge(df_penyebut[['NIP', 'Jurusan']], on='NIP', how='left')
+    # Get unique dosen aktif (unique NIP)
+    dosen_aktif = df_pembilang[['NIP', 'Nama']].drop_duplicates(subset='NIP')
 
-    # Get unique dosen (ambil 24 dosen pertama untuk display)
-    dosen_list = df_merged[['NIP', 'Nama', 'Jurusan']].drop_duplicates('NIP').head(24)
-    dosen_list = dosen_list.sort_values('Jurusan')
+    # Join dengan penyebut untuk dapat Program Studi dan Jurusan
+    df_dosen = dosen_aktif.merge(
+        df_penyebut[['NIP', 'Program Studi', 'Jurusan']],
+        on='NIP',
+        how='left'
+    )
 
-    # Create figure dengan style modern
-    fig = plt.figure(figsize=(14, 10), facecolor='white')
+    # Group by Program Studi dan kumpulkan nama-nama dosen
+    prodi_groups = df_dosen.groupby('Program Studi').agg({
+        'Nama': list,
+        'Jurusan': 'first'
+    }).reset_index()
 
-    # Title
-    fig.text(0.5, 0.96, 'IKU 31: Dosen Aktif Tridharma di PT Lain',
-             ha='center', fontsize=14, fontweight='bold', color='#2C3E50')
-    fig.text(0.5, 0.93, f'Featured {len(dosen_list)} dari {df_pembilang["NIP"].nunique()} Dosen Aktif',
-             ha='center', fontsize=10, color='#7F8C8D', style='italic')
+    # Hitung jumlah dosen per prodi
+    prodi_groups['Count'] = prodi_groups['Nama'].apply(len)
+    prodi_groups = prodi_groups.sort_values('Count', ascending=True)
 
-    # Group by jurusan
-    jurusan_groups = dosen_list.groupby('Jurusan')
+    # Create figure dengan height yang cukup
+    fig_height = max(10, len(prodi_groups) * 0.8)
+    fig, ax = plt.subplots(figsize=(16, fig_height))
 
-    # Layout parameters
-    y_start = 0.88
-    y_spacing = 0.35
-    card_height = 0.06
-    card_width = 0.22
-    cards_per_row = 4
+    y_pos = np.arange(len(prodi_groups))
 
-    for jurusan_name, group in jurusan_groups:
-        # Jurusan header
-        color = JURUSAN_COLORS.get(jurusan_name, {}).get('base', '#5B9BD5')
+    # Warna berdasarkan jurusan
+    colors = []
+    for jurusan in prodi_groups['Jurusan']:
+        colors.append(JURUSAN_COLORS.get(jurusan, {}).get('base', '#5B9BD5'))
 
-        fig.text(0.08, y_start, f'● {jurusan_name}',
-                fontsize=11, fontweight='bold', color=color)
-        fig.text(0.92, y_start, f'({len(group)} dosen)',
-                ha='right', fontsize=9, color='#7F8C8D')
+    # Buat bars
+    bars = ax.barh(y_pos, prodi_groups['Count'].values,
+                   color=colors, edgecolor='black',
+                   linewidth=1.2, alpha=0.85, height=0.7)
 
-        y_start -= 0.05
+    # Tambahkan nama-nama dosen di samping bar
+    for idx, (bar, row) in enumerate(zip(bars, prodi_groups.itertuples())):
+        count = row.Count
+        nama_list = row.Nama
 
-        # Draw cards for each dosen
-        for idx, (_, dosen) in enumerate(group.iterrows()):
-            row = idx // cards_per_row
-            col = idx % cards_per_row
+        # Format nama dosen
+        if count <= 6:
+            # Tampilkan semua nama untuk prodi dengan ≤6 dosen
+            all_names = [n.split(',')[0].strip() for n in nama_list]
+            nama_text = ', '.join(all_names)
+        else:
+            # Tampilkan 2 nama pertama + "dan X lainnya" untuk >6 dosen
+            first_names = [n.split(',')[0].strip() for n in nama_list[:2]]
+            nama_text = ', '.join(first_names) + f' dan {count-2} lainnya'
 
-            x = 0.08 + col * (card_width + 0.01)
-            y = y_start - row * (card_height + 0.01)
+        # Wrap text dengan width lebih kecil agar nama banyak di-split ke bawah
+        wrapped_text = '\n'.join(textwrap.wrap(nama_text, width=60))
 
-            # Card background
-            from matplotlib.patches import FancyBboxPatch
-            card = FancyBboxPatch((x, y - card_height), card_width, card_height,
-                                   boxstyle="round,pad=0.005",
-                                   facecolor=color, alpha=0.15,
-                                   edgecolor=color, linewidth=1.5,
-                                   transform=fig.transFigure)
-            fig.add_artist(card)
+        # Tampilkan text di samping bar
+        ax.text(bar.get_width() + 0.5, bar.get_y() + bar.get_height()/2,
+                wrapped_text,
+                ha='left', va='center', fontsize=12, style='italic',
+                color='#333333')
 
-            # Dosen name (truncate if too long)
-            name = dosen['Nama']
-            if len(name) > 28:
-                name = name[:25] + '...'
+        # Tampilkan count di dalam bar
+        ax.text(bar.get_width() - 0.3, bar.get_y() + bar.get_height()/2,
+                f'{count}',
+                ha='right', va='center', fontsize=10, fontweight='bold',
+                color='white' if count > 5 else '#333333')
 
-            fig.text(x + card_width/2, y - card_height/2, name,
-                    ha='center', va='center', fontsize=7.5,
-                    color='#2C3E50', transform=fig.transFigure)
+    # Styling
+    ax.set_yticks(y_pos)
+    prodi_labels = [p.replace('Program Studi ', '') for p in prodi_groups['Program Studi']]
+    ax.set_yticklabels(prodi_labels, fontsize=14, fontweight='500')
+    ax.set_xlabel('Jumlah Dosen Aktif', fontsize=13, fontweight='bold')
+    ax.set_title('IKU 31: Dosen Aktif Tridharma di PT Lain per Program Studi\\ndengan Daftar Nama',
+                 fontsize=14, fontweight='bold', pad=20)
+    ax.grid(axis='x', linestyle=':', alpha=0.5, zorder=0)
+    ax.set_axisbelow(True)
+    ax.spines['top'].set_visible(False)
+    ax.spines['right'].set_visible(False)
+    ax.spines['left'].set_linewidth(1.2)
+    ax.spines['bottom'].set_linewidth(1.2)
 
-        # Update y_start for next jurusan
-        rows_used = (len(group) - 1) // cards_per_row + 1
-        y_start -= (rows_used * (card_height + 0.01) + 0.08)
+    # Expand x-axis untuk memberi ruang text annotations (lebih compact)
+    max_count = max(prodi_groups['Count'])
+    ax.set_xlim(0, max_count * 1.3)
 
-        if y_start < 0.1:  # Stop if running out of space
-            break
-
-    # Footer note
-    if df_pembilang['NIP'].nunique() > len(dosen_list):
-        fig.text(0.5, 0.02, f'* Menampilkan {len(dosen_list)} dari {df_pembilang["NIP"].nunique()} dosen aktif',
-                ha='center', fontsize=8, style='italic', color='#95A5A6')
+    plt.tight_layout()
 
     # Save
-    saved_files = save_figure(fig, 'IKU_31_breakdown_dosen_showcase')
+    saved_files = save_figure(fig, 'IKU_31_breakdown_dosen_annotated')
     plt.close()
 
     return saved_files
@@ -223,8 +233,8 @@ def create_iku_31_breakdown():
     # Generate semua charts terpisah (tanpa duplikasi)
     all_files = []
 
-    print("    → Dosen Showcase (Featured Contributors)...")
-    all_files.extend(create_iku_31_dosen_showcase(df_pembilang, df_penyebut))
+    print("    → Dosen Annotated (Bar dengan Nama Dosen)...")
+    all_files.extend(create_iku_31_dosen_annotated(df_pembilang, df_penyebut))
 
     print("    → Statistik Summary (Top Kegiatan & Jenis)...")
     all_files.extend(create_iku_31_statistik(df_pembilang, df_penyebut))

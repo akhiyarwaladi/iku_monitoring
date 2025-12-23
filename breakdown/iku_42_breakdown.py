@@ -175,25 +175,23 @@ def create_iku_42_praktisi_annotated(df_pembilang):
         nama_list = row.Nama
 
         # Format nama dosen
-        if count <= 3:
-            # Tampilkan semua nama untuk prodi dengan ≤3 dosen
-            nama_text = ', '.join([n.split(',')[0].strip() for n in nama_list])
-        elif count <= 6:
-            # Tampilkan 3 nama pertama + "dan X lainnya"
-            first_names = [n.split(',')[0].strip() for n in nama_list[:3]]
-            nama_text = ', '.join(first_names) + f' dan {count-3} lainnya'
+        if count <= 6:
+            # Tampilkan semua nama untuk prodi dengan ≤6 dosen
+            # Split ke multiple lines (3 nama per line) agar tidak terlalu panjang
+            all_names = [n.split(',')[0].strip() for n in nama_list]
+            nama_text = ', '.join(all_names)
         else:
-            # Tampilkan 2 nama pertama + "dan X lainnya"
+            # Tampilkan 2 nama pertama + "dan X lainnya" untuk >6 dosen
             first_names = [n.split(',')[0].strip() for n in nama_list[:2]]
             nama_text = ', '.join(first_names) + f' dan {count-2} lainnya'
 
-        # Wrap text jika terlalu panjang
-        wrapped_text = '\n'.join(textwrap.wrap(nama_text, width=70))
+        # Wrap text dengan width lebih kecil agar nama banyak di-split ke bawah
+        wrapped_text = '\n'.join(textwrap.wrap(nama_text, width=60))
 
         # Tampilkan text di samping bar
         ax.text(bar.get_width() + 0.5, bar.get_y() + bar.get_height()/2,
                 wrapped_text,
-                ha='left', va='center', fontsize=7.5, style='italic',
+                ha='left', va='center', fontsize=12, style='italic',
                 color='#333333')
 
         # Tampilkan count di dalam bar
@@ -205,10 +203,10 @@ def create_iku_42_praktisi_annotated(df_pembilang):
     # Styling
     ax.set_yticks(y_pos)
     prodi_labels = [p.replace('Program Studi ', '') for p in prodi_groups['Program Studi']]
-    ax.set_yticklabels(prodi_labels, fontsize=9, fontweight='500')
-    ax.set_xlabel('Jumlah Praktisi', fontsize=11, fontweight='bold')
+    ax.set_yticklabels(prodi_labels, fontsize=14, fontweight='500')
+    ax.set_xlabel('Jumlah Praktisi', fontsize=13, fontweight='bold')
     ax.set_title('IKU 42: Distribusi Pengajar Praktisi per Program Studi\ndengan Daftar Nama',
-                 fontsize=12, fontweight='bold', pad=20)
+                 fontsize=14, fontweight='bold', pad=20)
     ax.grid(axis='x', linestyle=':', alpha=0.5, zorder=0)
     ax.set_axisbelow(True)
     ax.spines['top'].set_visible(False)
@@ -216,8 +214,9 @@ def create_iku_42_praktisi_annotated(df_pembilang):
     ax.spines['left'].set_linewidth(1.2)
     ax.spines['bottom'].set_linewidth(1.2)
 
-    # Expand x-axis untuk memberi ruang text annotations
-    ax.set_xlim(0, max(prodi_groups['Count']) * 2.5)
+    # Expand x-axis untuk memberi ruang text annotations (lebih compact)
+    max_count = max(prodi_groups['Count'])
+    ax.set_xlim(0, max_count * 1.3)
 
     plt.tight_layout()
 
