@@ -598,11 +598,11 @@ def create_horizontal_bar_chart(data, iku_number, target=None):
         if width > 15:
             ax.text(width - 2, bar.get_y() + bar.get_height()/2,
                    label, ha='right', va='center',
-                   fontsize=8, fontweight='bold', color='white')
+                   fontsize=10, fontweight='bold', color='white')
         else:
             ax.text(width + 1.5, bar.get_y() + bar.get_height()/2,
                    label, ha='left', va='center',
-                   fontsize=8, fontweight='bold', color='#333333')
+                   fontsize=10, fontweight='bold', color='#333333')
 
     # Y-labels dengan jurusan annotation
     y_labels = []
@@ -714,7 +714,7 @@ def create_vertical_bar_chart(data, iku_number, target=None):
         height = bar.get_height()
         label = f'{persen:.1f}%\n({pembilang}/{penyebut})'
         ax.text(bar.get_x() + bar.get_width()/2., height + 1,
-                label, ha='center', va='bottom', fontsize=7, fontweight='bold')
+                label, ha='center', va='bottom', fontsize=9, fontweight='bold')
 
     # Styling
     ax.set_xticks(x_pos)
