@@ -42,6 +42,36 @@ CONFIG = {
 }
 
 # ============================================================================
+# BREAKDOWN CHART STYLING
+# ============================================================================
+
+BREAKDOWN_STYLE = {
+    # Font sizes
+    'prodi_label_size': 14,        # Program Studi labels (Y-axis)
+    'faculty_name_size': 12,       # Faculty names annotations
+    'count_label_size': 10,        # Count numbers inside bars
+    'xlabel_size': 13,             # X-axis label
+    'title_size': 14,              # Chart title
+
+    # Layout
+    'bar_height': 0.7,             # Bar height
+    'text_wrap_width': 60,         # Text wrapping width for names
+    'x_axis_multiplier': 1.3,      # X-axis expansion for annotations
+    'fig_height_per_item': 0.8,    # Figure height multiplier
+    'min_fig_height': 10,          # Minimum figure height
+
+    # Positioning
+    'annotation_offset_x': 0.5,    # Horizontal offset for annotations
+    'count_offset_x': -0.3,        # Horizontal offset for count labels
+
+    # Colors
+    'annotation_color': '#333333', # Color for faculty name annotations
+    'count_color_light': '#333333',# Count color for light bars
+    'count_color_dark': 'white',   # Count color for dark bars
+    'count_threshold': 5,          # Threshold for switching count color
+}
+
+# ============================================================================
 # COLOR PALETTES
 # ============================================================================
 
