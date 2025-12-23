@@ -573,8 +573,8 @@ def create_horizontal_bar_chart(data, iku_number, target=None):
     # Horizontal bars dengan edge yang lebih tegas
     y_pos = np.arange(len(prodi_list))
     bars = ax.barh(y_pos, persentase_list, color=colors,
-                   edgecolor='black', linewidth=1.2,  # Line lebih tegas
-                   alpha=0.9, height=0.75)
+                   edgecolor='#1a1a1a', linewidth=1.5,  # Line lebih tegas & prominent
+                   alpha=0.88, height=0.75)
 
     # Tambahkan separator antar jurusan dengan garis horizontal
     current_jurusan = None
@@ -590,19 +590,17 @@ def create_horizontal_bar_chart(data, iku_number, target=None):
         ax.axvline(x=target, color=COLORS['target'], linestyle='--',
                    linewidth=2.5, label=f'Target ({target}%)', zorder=3, alpha=0.95)
 
-    # Labels pada bars
+    # Labels pada bars - semua di luar dengan warna hitam
     for i, (bar, persen, pembilang, penyebut) in enumerate(zip(bars, persentase_list, pembilang_list, penyebut_list)):
         width = bar.get_width()
-        label = f'{persen:.1f}% ({pembilang}/{penyebut})'
+        # Format: tampilkan decimal hanya jika bukan angka bulat
+        persen_str = f'{int(persen)}' if persen == int(persen) else f'{persen:.1f}'
+        label = f'{persen_str}% ({pembilang}/{penyebut})'
 
-        if width > 15:
-            ax.text(width - 2, bar.get_y() + bar.get_height()/2,
-                   label, ha='right', va='center',
-                   fontsize=10, fontweight='bold', color='white')
-        else:
-            ax.text(width + 1.5, bar.get_y() + bar.get_height()/2,
-                   label, ha='left', va='center',
-                   fontsize=10, fontweight='bold', color='#333333')
+        # Semua label di luar bar, warna hitam
+        ax.text(width + 1.5, bar.get_y() + bar.get_height()/2,
+               label, ha='left', va='center',
+               fontsize=11, fontweight='900', color='black')
 
     # Y-labels dengan jurusan annotation
     y_labels = []
@@ -611,20 +609,20 @@ def create_horizontal_bar_chart(data, iku_number, target=None):
 
     # Styling
     ax.set_yticks(y_pos)
-    ax.set_yticklabels(y_labels, fontsize=9, fontweight='500')
-    ax.set_xlabel('Persentase (%)', fontsize=11, fontweight='bold')
+    ax.set_yticklabels(y_labels, fontsize=10, fontweight='600')
+    ax.set_xlabel('Persentase (%)', fontsize=12, fontweight='700')
     ax.set_title(f"{metadata['title']}\n{metadata['subtitle']}",
-                 fontsize=12, fontweight='bold', pad=20)
+                 fontsize=13, fontweight='900', pad=20)
 
     # Grid dengan style yang lebih halus tapi tetap terlihat
-    ax.xaxis.grid(True, linestyle=':', alpha=0.5, zorder=0, linewidth=1.0)
+    ax.xaxis.grid(True, linestyle=':', alpha=0.6, zorder=0, linewidth=0.8)
     ax.set_axisbelow(True)
 
     # Spines dengan line yang lebih tegas
     ax.spines['top'].set_visible(False)
     ax.spines['right'].set_visible(False)
-    ax.spines['left'].set_linewidth(1.2)
-    ax.spines['bottom'].set_linewidth(1.2)
+    ax.spines['left'].set_linewidth(1.5)
+    ax.spines['bottom'].set_linewidth(1.5)
 
     # X-axis limit
     max_val = max(persentase_list) if persentase_list else 100
@@ -637,14 +635,18 @@ def create_horizontal_bar_chart(data, iku_number, target=None):
     legend_elements = [Patch(facecolor=JURUSAN_COLORS[j]['base'],
                              edgecolor='black', linewidth=1.0, label=j)
                       for j in JURUSAN_ORDER if j in jurusan_list]
+
+    # Reverse order agar sesuai dengan urutan chart (bottom to top)
+    legend_elements = legend_elements[::-1]
+
     if target:
         from matplotlib.lines import Line2D
         legend_elements.append(Line2D([0], [0], color=COLORS['target'],
                                       linewidth=2.5, linestyle='--',
                                       label=f'Target ({target}%)'))
 
-    ax.legend(handles=legend_elements, loc='lower right',
-             fontsize=9, framealpha=0.95, edgecolor='black')
+    ax.legend(handles=legend_elements, loc='upper right',
+             fontsize=10, framealpha=0.95, edgecolor='black', fancybox=False)
 
     plt.tight_layout()
 
@@ -692,8 +694,8 @@ def create_vertical_bar_chart(data, iku_number, target=None):
     # Vertical bars with stronger edges, lebih gendut dan spacing luas
     x_pos = np.arange(len(prodi_list))
     bars = ax.bar(x_pos, persentase_list, color=colors,
-                  edgecolor='black', linewidth=1.2,
-                  alpha=0.9, width=0.9)  # Width 0.9 untuk bar lebih gendut
+                  edgecolor='#1a1a1a', linewidth=1.5,
+                  alpha=0.88, width=0.9)  # Width 0.9 untuk bar lebih gendut
 
     # Tambahkan separator antar jurusan dengan garis vertikal
     current_jurusan = None
@@ -712,26 +714,28 @@ def create_vertical_bar_chart(data, iku_number, target=None):
     # Label di atas bars (persentase dan pembilang/penyebut)
     for bar, persen, pembilang, penyebut in zip(bars, persentase_list, pembilang_list, penyebut_list):
         height = bar.get_height()
-        label = f'{persen:.1f}%\n({pembilang}/{penyebut})'
+        # Format: tampilkan decimal hanya jika bukan angka bulat
+        persen_str = f'{int(persen)}' if persen == int(persen) else f'{persen:.1f}'
+        label = f'{persen_str}%\n({pembilang}/{penyebut})'
         ax.text(bar.get_x() + bar.get_width()/2., height + 1,
-                label, ha='center', va='bottom', fontsize=9, fontweight='bold')
+                label, ha='center', va='bottom', fontsize=10, fontweight='900')
 
     # Styling
     ax.set_xticks(x_pos)
-    ax.set_xticklabels(prodi_list, rotation=45, ha='right', fontsize=9, fontweight='500')
-    ax.set_ylabel('Persentase (%)', fontsize=11, fontweight='bold')
+    ax.set_xticklabels(prodi_list, rotation=45, ha='right', fontsize=10, fontweight='600')
+    ax.set_ylabel('Persentase (%)', fontsize=12, fontweight='700')
     ax.set_title(f"{metadata['title']}\n{metadata['subtitle']}",
-                 fontsize=12, fontweight='bold', pad=15)
+                 fontsize=13, fontweight='900', pad=15)
 
     # Grid
-    ax.yaxis.grid(True, linestyle=':', alpha=0.5, zorder=0, linewidth=1.0)
+    ax.yaxis.grid(True, linestyle=':', alpha=0.6, zorder=0, linewidth=0.8)
     ax.set_axisbelow(True)
 
     # Spines
     ax.spines['top'].set_visible(False)
     ax.spines['right'].set_visible(False)
-    ax.spines['left'].set_linewidth(1.2)
-    ax.spines['bottom'].set_linewidth(1.2)
+    ax.spines['left'].set_linewidth(1.5)
+    ax.spines['bottom'].set_linewidth(1.5)
 
     # Y-axis limit
     max_val = max(persentase_list) if persentase_list else 100
@@ -750,8 +754,8 @@ def create_vertical_bar_chart(data, iku_number, target=None):
                                       linewidth=2.5, linestyle='--',
                                       label=f'Target ({target}%)'))
 
-    ax.legend(handles=legend_elements, loc='upper left',
-             fontsize=9, framealpha=0.95, edgecolor='black')
+    ax.legend(handles=legend_elements, loc='upper right',
+             fontsize=10, framealpha=0.95, edgecolor='black', fancybox=False)
 
     plt.tight_layout()
 

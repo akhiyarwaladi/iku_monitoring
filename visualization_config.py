@@ -27,18 +27,18 @@ OUTPUT_DIR = BASE_PATH / 'output'
 CONFIG = {
     # Publication settings
     'dpi': 300,
-    'font_size': 9,
+    'font_size': 10,  # Increased from 9 for better readability
     'font_family': 'sans-serif',
-    'font_name': ['Arial', 'Helvetica', 'DejaVu Sans'],
+    'font_name': ['Avenir', 'Avenir Next', 'Century Gothic', 'Trebuchet MS', 'Arial', 'Helvetica', 'DejaVu Sans'],
 
     # Export formats
     'export_png': True,
     'export_svg': True,
 
-    # Line widths
-    'axes_linewidth': 0.75,
-    'grid_linewidth': 0.5,
-    'bar_linewidth': 1.2,
+    # Line widths (increased for more professional appearance)
+    'axes_linewidth': 1.5,      # Was 0.75 - more prominent axes
+    'grid_linewidth': 0.8,      # Was 0.5 - clearer grid
+    'bar_linewidth': 1.5,       # Was 1.2 - sharper bar edges
 }
 
 # ============================================================================
@@ -46,12 +46,12 @@ CONFIG = {
 # ============================================================================
 
 BREAKDOWN_STYLE = {
-    # Font sizes
-    'prodi_label_size': 14,        # Program Studi labels (Y-axis)
-    'faculty_name_size': 12,       # Faculty names annotations
+    # Font sizes (matched with main charts for consistency)
+    'prodi_label_size': 10,        # Program Studi labels (Y-axis) - was 14
+    'faculty_name_size': 9,        # Faculty names annotations - was 12
     'count_label_size': 10,        # Count numbers inside bars
-    'xlabel_size': 13,             # X-axis label
-    'title_size': 14,              # Chart title
+    'xlabel_size': 12,             # X-axis label - was 13
+    'title_size': 13,              # Chart title - was 14
 
     # Layout
     'bar_height': 0.7,             # Bar height
@@ -65,8 +65,8 @@ BREAKDOWN_STYLE = {
     'count_offset_x': -0.3,        # Horizontal offset for count labels
 
     # Colors
-    'annotation_color': '#333333', # Color for faculty name annotations
-    'count_color_light': '#333333',# Count color for light bars
+    'annotation_color': '#2C2C2C', # Darker for better contrast - was #333333
+    'count_color_light': '#2C2C2C',# Darker for better contrast
     'count_color_dark': 'white',   # Count color for dark bars
     'count_threshold': 5,          # Threshold for switching count color
 }

@@ -86,8 +86,8 @@ def create_iku_31_statistik(df_pembilang, df_penyebut):
         left_xlabel='Jumlah Kegiatan',
         right_xlabel='Jumlah Kegiatan',
         filename_base='IKU_31_breakdown_statistik',
-        left_colors=['#5B9BD5'] * len(top_kegiatan),
-        right_colors=jenis_colors,
+        left_colors=None,  # Use default colorblind palette
+        right_colors=jenis_colors,  # Keep custom colors for jenis
         left_wrap_width=35,
         right_wrap_width=40
     )

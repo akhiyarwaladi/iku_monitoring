@@ -167,19 +167,21 @@ BREAKDOWN_STYLE = {
 
 ## 📝 Update Terakhir
 
-**Version**: 3.1 (Consistent Structure + Font Fixes)
+**Version**: 3.5 (Professional Enhancement + Label Consistency)
 **Date**: 2025-12-23
 **Changes**:
+- ✅ **Professional styling** - Bolder fonts (weight 600-900), thicker lines (1.5pt)
+- ✅ **Consistent label placement** - All main chart labels outside bars with black color
+- ✅ **Enhanced readability** - Font sizes increased: 10pt base, 11-13pt labels/titles
+- ✅ **Sharper appearance** - Bar edges 1.5pt, grid 0.8pt, clearer visual hierarchy
+- ✅ **Balanced colors** - Alpha 0.88, edge color #1a1a1a for softer professional look
+- ✅ **Perfect color consistency** - Gradient colors match exactly between main and breakdown
+- ✅ **Jurusan-based grouping** - Breakdown charts group by jurusan first, then by count
+- ✅ **Meaningful separator lines** - Visual grouping between jurusan
+- ✅ **Colorblind-friendly palettes** - Dual charts use seaborn colorblind/Set2 palettes
 - ✅ **Separated main visualizations** - main/iku_XX_main.py per IKU
-- ✅ **Increased breakdown fonts** - 10pt labels, 12pt titles (was 8pt, 11pt)
 - ✅ **Consistent structure** - main/ dan breakdown/ sama-sama terpisah per IKU
-- ✅ Full modular refactor - shared utilities
-- ✅ Centralized styling constants
-- ✅ Created breakdown_utils.py
-- ✅ Reduced code duplication by ~70%
-- ✅ Added generate_all.py master script
-- ✅ Font size increased untuk readability (14pt prodi, 12pt names)
-- ✅ Removed italic style untuk bolder appearance
+- ✅ Full modular refactor - shared utilities, reduced duplication by ~70%
 
 ## 🛠️ Dependencies
 

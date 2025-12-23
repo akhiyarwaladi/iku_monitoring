@@ -31,12 +31,6 @@ def create_iku_41_statistik(df_pembilang, df_penyebut):
     # Top 10 Bidang Sertifikasi
     top_bidang = df_pembilang['Bidang Sertifikasi'].value_counts().head(10)
 
-    # Prepare colors
-    lembaga_colors = ['#3498DB', '#E74C3C', '#F39C12', '#1ABC9C', '#9B59B6',
-                      '#E85D75', '#70AD47', '#5B9BD5', '#ED7D31', '#9966CC'][:len(top_lembaga)]
-    bidang_colors = ['#70AD47', '#5B9BD5', '#ED7D31', '#9966CC', '#E85D75',
-                     '#FFC000', '#A8D08D', '#F4B183', '#C5A8E0', '#BDC3C7'][:len(top_bidang)]
-
     # Create main title
     main_title = (f'IKU 41: Statistik Summary - Dosen dengan Sertifikat DUDI\n'
                   f'Total: {total_sertifikat} sertifikat | {total_dosen_bersertifikat} dosen '
@@ -51,8 +45,8 @@ def create_iku_41_statistik(df_pembilang, df_penyebut):
         left_xlabel='Jumlah Sertifikat',
         right_xlabel='Jumlah Sertifikat',
         filename_base='IKU_41_breakdown_statistik',
-        left_colors=lembaga_colors,
-        right_colors=bidang_colors,
+        left_colors=None,  # Use automatic colorblind palette
+        right_colors=None,  # Use automatic Set2 palette
         left_wrap_width=35,
         right_wrap_width=35
     )

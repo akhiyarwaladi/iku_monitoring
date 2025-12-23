@@ -31,11 +31,6 @@ def create_iku_33_statistik(df_pembilang, df_penyebut):
     # Top 10 Paket Program (nama spesifik program)
     top_paket = df_pembilang['Paket Program'].value_counts().head(10)
 
-    # Prepare colors
-    program_colors = ['#3498DB', '#E74C3C', '#F39C12', '#1ABC9C', '#9B59B6'][:len(nama_program)]
-    paket_colors = ['#3498DB', '#E74C3C', '#F39C12', '#1ABC9C', '#9B59B6',
-                    '#E85D75', '#70AD47', '#5B9BD5', '#ED7D31', '#9966CC'][:len(top_paket)]
-
     # Create main title
     main_title = (f'IKU 33: Statistik Summary - Bimbingan Mahasiswa Luar Prodi\n'
                   f'Total: {total_mahasiswa} mahasiswa | {total_dosen_aktif} dosen '
@@ -50,8 +45,8 @@ def create_iku_33_statistik(df_pembilang, df_penyebut):
         left_xlabel='Jumlah Mahasiswa',
         right_xlabel='Jumlah Mahasiswa',
         filename_base='IKU_33_breakdown_statistik',
-        left_colors=program_colors,
-        right_colors=paket_colors,
+        left_colors=None,  # Use automatic colorblind palette
+        right_colors=None,  # Use automatic Set2 palette
         left_wrap_width=40,
         right_wrap_width=45
     )
