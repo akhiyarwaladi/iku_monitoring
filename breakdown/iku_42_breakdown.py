@@ -191,7 +191,7 @@ def create_iku_42_praktisi_annotated(df_pembilang):
         # Tampilkan text di samping bar
         ax.text(bar.get_width() + 0.5, bar.get_y() + bar.get_height()/2,
                 wrapped_text,
-                ha='left', va='center', fontsize=12, style='italic',
+                ha='left', va='center', fontsize=12,
                 color='#333333')
 
         # Tampilkan count di dalam bar
