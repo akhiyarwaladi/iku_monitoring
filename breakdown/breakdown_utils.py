@@ -199,15 +199,15 @@ def create_dual_bar_chart(left_data, right_data,
         width = bar.get_width()
         ax1.text(width + 0.3, bar.get_y() + bar.get_height()/2,
                 f'{int(count)}',
-                ha='left', va='center', fontsize=9, fontweight='bold')
+                ha='left', va='center', fontsize=10, fontweight='bold')
 
     # Styling ax1
     ax1.set_yticks(y_pos1)
     left_labels = ['\n'.join(textwrap.wrap(name, width=left_wrap_width))
                    for name in left_data.index]
-    ax1.set_yticklabels(left_labels, fontsize=8, fontweight='500')
-    ax1.set_xlabel(left_xlabel, fontsize=11, fontweight='bold')
-    ax1.set_title(left_title, fontsize=11, fontweight='bold', pad=15)
+    ax1.set_yticklabels(left_labels, fontsize=10, fontweight='500')
+    ax1.set_xlabel(left_xlabel, fontsize=12, fontweight='bold')
+    ax1.set_title(left_title, fontsize=12, fontweight='bold', pad=15)
     ax1.xaxis.grid(True, linestyle=':', alpha=0.5, zorder=0, linewidth=1.0)
     ax1.set_axisbelow(True)
     ax1.spines['top'].set_visible(False)
@@ -230,15 +230,15 @@ def create_dual_bar_chart(left_data, right_data,
         width = bar.get_width()
         ax2.text(width + 0.3, bar.get_y() + bar.get_height()/2,
                 f'{int(count)}',
-                ha='left', va='center', fontsize=9, fontweight='bold')
+                ha='left', va='center', fontsize=10, fontweight='bold')
 
     # Styling ax2
     ax2.set_yticks(y_pos2)
     right_labels = ['\n'.join(textwrap.wrap(name, width=right_wrap_width))
                     for name in right_data.index]
-    ax2.set_yticklabels(right_labels, fontsize=8, fontweight='500')
-    ax2.set_xlabel(right_xlabel, fontsize=11, fontweight='bold')
-    ax2.set_title(right_title, fontsize=11, fontweight='bold', pad=15)
+    ax2.set_yticklabels(right_labels, fontsize=10, fontweight='500')
+    ax2.set_xlabel(right_xlabel, fontsize=12, fontweight='bold')
+    ax2.set_title(right_title, fontsize=12, fontweight='bold', pad=15)
     ax2.xaxis.grid(True, linestyle=':', alpha=0.5, zorder=0, linewidth=1.0)
     ax2.set_axisbelow(True)
     ax2.spines['top'].set_visible(False)
@@ -249,7 +249,7 @@ def create_dual_bar_chart(left_data, right_data,
 
     # Main title
     if main_title:
-        fig.suptitle(main_title, fontsize=12, fontweight='bold', y=0.98)
+        fig.suptitle(main_title, fontsize=13, fontweight='bold', y=0.98)
 
     plt.tight_layout(rect=[0, 0, 1, 0.95] if main_title else None)
 

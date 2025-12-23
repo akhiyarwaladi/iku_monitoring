@@ -29,15 +29,21 @@ iku_monitoring/
 ├── CLAUDE.md                          # Dokumentasi teknis lengkap
 │
 ├── generate_all.py                    # 🎯 MASTER SCRIPT - Run semua visualisasi
-├── main_visualize_iku.py              # Main visualizations (summary per prodi)
+├── main_visualize_iku.py              # Main visualizations (legacy support)
 ├── visualization_config.py            # 🔧 Konfigurasi & utilities terpusat
+│
+├── main/                              # Main visualizations per IKU
+│   ├── iku_31_main.py                 # IKU 31: Tridharma (horizontal + vertical)
+│   ├── iku_33_main.py                 # IKU 33: Bimbingan (horizontal + vertical)
+│   ├── iku_41_main.py                 # IKU 41: Sertifikat (horizontal + vertical)
+│   └── iku_42_main.py                 # IKU 42: Praktisi (horizontal + vertical)
 │
 ├── breakdown/                         # Breakdown charts per IKU
 │   ├── breakdown_utils.py             # 🔧 Shared utilities untuk breakdown
-│   ├── iku_31_breakdown.py            # IKU 31: Tridharma di PT Lain
-│   ├── iku_33_breakdown.py            # IKU 33: Bimbingan Luar Prodi
-│   ├── iku_41_breakdown.py            # IKU 41: Sertifikat DUDI
-│   └── iku_42_breakdown.py            # IKU 42: Praktisi Profesional
+│   ├── iku_31_breakdown.py            # IKU 31: Tridharma detail
+│   ├── iku_33_breakdown.py            # IKU 33: Bimbingan detail
+│   ├── iku_41_breakdown.py            # IKU 41: Sertifikat detail
+│   └── iku_42_breakdown.py            # IKU 42: Praktisi detail
 │
 ├── monitoring-iku-*.xlsx              # Data Excel
 │
@@ -70,12 +76,19 @@ Script ini akan generate:
 ### Generate Main Visualizations Saja
 
 ```bash
+# Semua main visualizations
 python main_visualize_iku.py
+
+# Atau per IKU individual
+python main/iku_31_main.py
+python main/iku_33_main.py
+python main/iku_41_main.py
+python main/iku_42_main.py
 ```
 
 Output:
-- IKU 31, 33, 41, 42: Horizontal & Vertical bar charts
-- Summary dashboard
+- IKU XX: Horizontal & Vertical bar charts
+- Summary dashboard (jika run main_visualize_iku.py)
 
 ### Generate Breakdown Terpisah
 
@@ -154,9 +167,12 @@ BREAKDOWN_STYLE = {
 
 ## 📝 Update Terakhir
 
-**Version**: 3.0 (Modular Refactor)
+**Version**: 3.1 (Consistent Structure + Font Fixes)
 **Date**: 2025-12-23
 **Changes**:
+- ✅ **Separated main visualizations** - main/iku_XX_main.py per IKU
+- ✅ **Increased breakdown fonts** - 10pt labels, 12pt titles (was 8pt, 11pt)
+- ✅ **Consistent structure** - main/ dan breakdown/ sama-sama terpisah per IKU
 - ✅ Full modular refactor - shared utilities
 - ✅ Centralized styling constants
 - ✅ Created breakdown_utils.py
