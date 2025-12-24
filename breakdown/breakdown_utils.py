@@ -77,7 +77,7 @@ def create_annotated_bar_chart(df_data,
     style = BREAKDOWN_STYLE
     fig_height = max(style['min_fig_height'],
                      len(grouped) * style['fig_height_per_item'])
-    fig, ax = plt.subplots(figsize=(16, fig_height))
+    fig, ax = plt.subplots(figsize=(18, fig_height))
 
     y_pos = np.arange(len(grouped))
 
@@ -132,9 +132,9 @@ def create_annotated_bar_chart(df_data,
             all_names = [n.split(',')[0].strip() for n in nama_list]
             nama_text = ', '.join(all_names)
         else:
-            # Tampilkan 2 nama pertama + "dan X lainnya"
-            first_names = [n.split(',')[0].strip() for n in nama_list[:2]]
-            nama_text = ', '.join(first_names) + f' dan {count-2} lainnya'
+            # Tampilkan 8 nama pertama + ".. dan lainnya"
+            first_names = [n.split(',')[0].strip() for n in nama_list[:8]]
+            nama_text = ', '.join(first_names) + f'.. dan {count-8} lainnya'
 
         # Wrap text
         wrapped_text = '\n'.join(textwrap.wrap(nama_text, width=style['text_wrap_width']))
@@ -190,7 +190,9 @@ def create_dual_bar_chart(left_data, right_data,
                           left_xlabel='', right_xlabel='',
                           filename_base='',
                           left_colors=None, right_colors=None,
-                          left_wrap_width=35, right_wrap_width=35):
+                          left_wrap_width=35, right_wrap_width=35,
+                          left_ylabel_fontsize=10, right_ylabel_fontsize=10,
+                          add_legend=False, legend_labels=None, legend_title=''):
     """
     Membuat figure dengan 2 horizontal bar charts side-by-side
 
@@ -212,6 +214,8 @@ def create_dual_bar_chart(left_data, right_data,
         List warna untuk bars
     left_wrap_width, right_wrap_width : int
         Text wrapping width
+    left_ylabel_fontsize, right_ylabel_fontsize : int
+        Font size untuk Y-axis labels
 
     Returns:
     --------
@@ -224,7 +228,7 @@ def create_dual_bar_chart(left_data, right_data,
     max_items = max(len(left_data), len(right_data))
     fig_height = max(style['min_fig_height'], max_items * 0.7)
 
-    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(16, fig_height))
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(18, fig_height))
 
     # LEFT CHART
     y_pos1 = np.arange(len(left_data))
@@ -248,7 +252,7 @@ def create_dual_bar_chart(left_data, right_data,
     ax1.set_yticks(y_pos1)
     left_labels = ['\n'.join(textwrap.wrap(name, width=left_wrap_width))
                    for name in left_data.index]
-    ax1.set_yticklabels(left_labels, fontsize=10, fontweight='600')
+    ax1.set_yticklabels(left_labels, fontsize=left_ylabel_fontsize, fontweight='600')
     ax1.set_xlabel(left_xlabel, fontsize=12, fontweight='700')
     ax1.set_title(left_title, fontsize=13, fontweight='900', pad=15)
     ax1.xaxis.grid(True, linestyle=':', alpha=0.6, zorder=0, linewidth=0.8)
@@ -281,7 +285,7 @@ def create_dual_bar_chart(left_data, right_data,
     ax2.set_yticks(y_pos2)
     right_labels = ['\n'.join(textwrap.wrap(name, width=right_wrap_width))
                     for name in right_data.index]
-    ax2.set_yticklabels(right_labels, fontsize=10, fontweight='600')
+    ax2.set_yticklabels(right_labels, fontsize=right_ylabel_fontsize, fontweight='600')
     ax2.set_xlabel(right_xlabel, fontsize=12, fontweight='700')
     ax2.set_title(right_title, fontsize=13, fontweight='900', pad=15)
     ax2.xaxis.grid(True, linestyle=':', alpha=0.6, zorder=0, linewidth=0.8)
@@ -291,6 +295,30 @@ def create_dual_bar_chart(left_data, right_data,
     ax2.spines['left'].set_linewidth(1.5)
     ax2.spines['bottom'].set_linewidth(1.5)
     ax2.invert_yaxis()
+
+    # Add legend if requested
+    if add_legend and legend_labels:
+        import matplotlib.patches as mpatches
+
+        # Create legend elements
+        legend_elements = []
+        for label, color in legend_labels.items():
+            legend_elements.append(
+                mpatches.Patch(facecolor=color, edgecolor='#1a1a1a',
+                             linewidth=1.5, label=label)
+            )
+
+        # Add legend (vertical, upper right)
+        fig.legend(handles=legend_elements,
+                  loc='upper right',
+                  bbox_to_anchor=(0.98, 0.96),
+                  ncol=1,  # Vertical layout
+                  frameon=True,
+                  framealpha=0.95,
+                  edgecolor='0.2',
+                  fontsize=10,
+                  title=legend_title,
+                  title_fontsize=11)
 
     # Main title (match dengan main charts)
     if main_title:

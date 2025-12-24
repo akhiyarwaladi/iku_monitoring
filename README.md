@@ -19,6 +19,8 @@ Project ini menghasilkan visualisasi berkualitas publikasi untuk 4 IKU utama:
 ✅ **Shared Utilities** - Fungsi-fungsi umum di-centralize, tidak ada duplikasi
 ✅ **Color-coded** - Warna berdasarkan jurusan untuk kemudahan identifikasi
 ✅ **Annotated Charts** - Bar charts dengan nama dosen untuk detail informasi
+✅ **Jurusan-based Grouping** - IKU 41 dengan color coding dan legend per jurusan
+✅ **Colorblind-friendly** - Palette berdasarkan best practices internasional
 ✅ **Configurable** - Semua styling constants terpusat di satu tempat
 
 ## 📁 Struktur Project
@@ -167,9 +169,15 @@ BREAKDOWN_STYLE = {
 
 ## 📝 Update Terakhir
 
-**Version**: 3.5 (Professional Enhancement + Label Consistency)
+**Version**: 3.6 (IKU 41 Jurusan Color Coding)
 **Date**: 2025-12-23
 **Changes**:
+- ✅ **IKU 41 Jurusan Visualization** - Color-coded bars by jurusan for easy identification
+- ✅ **Smart Detail Labels** - Mixed jurusan shown with abbreviated names (T.Kim:1, T.Elek:1)
+- ✅ **Jurusan Legend** - Top legend showing jurusan-to-color mapping
+- ✅ **Improved Name Display** - Show 8 names in annotated charts before ".. dan X lainnya"
+- ✅ **Activity Name Readability** - Smaller font (8pt) for long activity names in IKU 31
+- ✅ **Best Practice Implementation** - Based on colorblind-friendly visualization research
 - ✅ **Professional styling** - Bolder fonts (weight 600-900), thicker lines (1.5pt)
 - ✅ **Consistent label placement** - All main chart labels outside bars with black color
 - ✅ **Enhanced readability** - Font sizes increased: 10pt base, 11-13pt labels/titles

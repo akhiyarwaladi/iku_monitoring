@@ -169,6 +169,36 @@ def get_prodi_color(prodi_name, index_in_jurusan=0, total_in_jurusan=1):
 
 # IKU Metadata
 IKU_METADATA = {
+    '11': {
+        'title': 'Persentase Lulusan yang Memiliki Pekerjaan',
+        'subtitle': 'Fakultas Sains & Teknologi 2025',
+        'description': 'Lulusan yang bekerja setelah lulus'
+    },
+    '12': {
+        'title': 'Persentase Lulusan yang Melanjutkan Studi',
+        'subtitle': 'Fakultas Sains & Teknologi 2025',
+        'description': 'Lulusan yang melanjutkan pendidikan ke jenjang lebih tinggi'
+    },
+    '13': {
+        'title': 'Persentase Lulusan yang Berwiraswasta',
+        'subtitle': 'Fakultas Sains & Teknologi 2025',
+        'description': 'Lulusan yang berwiraswasta/membangun usaha sendiri'
+    },
+    '21': {
+        'title': 'Persentase Mahasiswa yang Mengikuti Kegiatan MBKM',
+        'subtitle': 'Fakultas Sains & Teknologi 2025',
+        'description': 'Mahasiswa yang mengikuti kegiatan MBKM (Magang, Studi Independen, dll)'
+    },
+    '22': {
+        'title': 'Persentase Mahasiswa yang Meraih Prestasi',
+        'subtitle': 'Fakultas Sains & Teknologi 2025',
+        'description': 'Mahasiswa yang meraih prestasi tingkat lokal hingga internasional'
+    },
+    '23': {
+        'title': 'Persentase Mahasiswa yang Memiliki HKI',
+        'subtitle': 'Fakultas Sains & Teknologi 2025',
+        'description': 'Mahasiswa yang memiliki Hak Kekayaan Intelektual'
+    },
     '31': {
         'title': 'Persentase Dosen Berkegiatan Tridharma di Perguruan Tinggi Lain',
         'subtitle': 'Fakultas Sains & Teknologi 2025',
@@ -411,6 +441,196 @@ def process_iku_42(df_pembilang, df_penyebut):
     result['Persentase'] = (result['Pembilang'] / result['Penyebut'] * 100).round(2)
 
     # Bersihkan nama prodi
+    result['Program Studi'] = result['Program Studi'].str.replace('Program Studi ', '')
+
+    # Sort berdasarkan persentase
+    result = result.sort_values('Persentase', ascending=True)
+
+    return result
+
+def process_iku_11(df_pembilang, df_penyebut):
+    """
+    Proses data IKU 11 - Lulusan yang Memiliki Pekerjaan
+
+    Note: File pembilang sudah memiliki kolom Prodi (bukan Program Studi)
+
+    Returns:
+    --------
+    pd.DataFrame dengan kolom: Program Studi, Pembilang, Penyebut, Persentase
+    """
+    # Hitung penyebut per prodi
+    penyebut_prodi = df_penyebut.groupby('Prodi').size().reset_index(name='Penyebut')
+
+    # Hitung pembilang per prodi (sudah ada kolom Prodi di pembilang)
+    pembilang_prodi = df_pembilang.groupby('Prodi').size().reset_index(name='Pembilang')
+
+    # Gabungkan
+    result = penyebut_prodi.merge(pembilang_prodi, on='Prodi', how='left')
+    result['Pembilang'] = result['Pembilang'].fillna(0).astype(int)
+    result['Persentase'] = (result['Pembilang'] / result['Penyebut'] * 100).round(2)
+
+    # Rename Prodi ke Program Studi untuk konsistensi
+    result = result.rename(columns={'Prodi': 'Program Studi'})
+
+    # Bersihkan nama prodi jika ada prefix "Program Studi "
+    result['Program Studi'] = result['Program Studi'].str.replace('Program Studi ', '')
+
+    # Sort berdasarkan persentase
+    result = result.sort_values('Persentase', ascending=True)
+
+    return result
+
+def process_iku_12(df_pembilang, df_penyebut):
+    """
+    Proses data IKU 12 - Lulusan yang Melanjutkan Studi
+
+    Note: File pembilang sudah memiliki kolom Prodi (bukan Program Studi)
+
+    Returns:
+    --------
+    pd.DataFrame dengan kolom: Program Studi, Pembilang, Penyebut, Persentase
+    """
+    # Hitung penyebut per prodi
+    penyebut_prodi = df_penyebut.groupby('Prodi').size().reset_index(name='Penyebut')
+
+    # Hitung pembilang per prodi (sudah ada kolom Prodi di pembilang)
+    pembilang_prodi = df_pembilang.groupby('Prodi').size().reset_index(name='Pembilang')
+
+    # Gabungkan
+    result = penyebut_prodi.merge(pembilang_prodi, on='Prodi', how='left')
+    result['Pembilang'] = result['Pembilang'].fillna(0).astype(int)
+    result['Persentase'] = (result['Pembilang'] / result['Penyebut'] * 100).round(2)
+
+    # Rename Prodi ke Program Studi untuk konsistensi
+    result = result.rename(columns={'Prodi': 'Program Studi'})
+
+    # Bersihkan nama prodi jika ada prefix "Program Studi "
+    result['Program Studi'] = result['Program Studi'].str.replace('Program Studi ', '')
+
+    # Sort berdasarkan persentase
+    result = result.sort_values('Persentase', ascending=True)
+
+    return result
+
+def process_iku_13(df_pembilang, df_penyebut):
+    """
+    Proses data IKU 13 - Lulusan yang Berwiraswasta
+
+    Note: File pembilang sudah memiliki kolom Prodi (bukan Program Studi)
+
+    Returns:
+    --------
+    pd.DataFrame dengan kolom: Program Studi, Pembilang, Penyebut, Persentase
+    """
+    # Hitung penyebut per prodi
+    penyebut_prodi = df_penyebut.groupby('Prodi').size().reset_index(name='Penyebut')
+
+    # Hitung pembilang per prodi (sudah ada kolom Prodi di pembilang)
+    pembilang_prodi = df_pembilang.groupby('Prodi').size().reset_index(name='Pembilang')
+
+    # Gabungkan
+    result = penyebut_prodi.merge(pembilang_prodi, on='Prodi', how='left')
+    result['Pembilang'] = result['Pembilang'].fillna(0).astype(int)
+    result['Persentase'] = (result['Pembilang'] / result['Penyebut'] * 100).round(2)
+
+    # Rename Prodi ke Program Studi untuk konsistensi
+    result = result.rename(columns={'Prodi': 'Program Studi'})
+
+    # Bersihkan nama prodi jika ada prefix "Program Studi "
+    result['Program Studi'] = result['Program Studi'].str.replace('Program Studi ', '')
+
+    # Sort berdasarkan persentase
+    result = result.sort_values('Persentase', ascending=True)
+
+    return result
+
+def process_iku_21(df_pembilang, df_penyebut):
+    """
+    Proses data IKU 21 - Mahasiswa yang Mengikuti Kegiatan MBKM
+
+    Note: File menggunakan kolom 'Program Studi'
+
+    Returns:
+    --------
+    pd.DataFrame dengan kolom: Program Studi, Pembilang, Penyebut, Persentase
+    """
+    # Hitung penyebut per prodi
+    penyebut_prodi = df_penyebut.groupby('Program Studi').size().reset_index(name='Penyebut')
+
+    # Hitung pembilang per prodi (sudah ada kolom Program Studi di pembilang)
+    pembilang_prodi = df_pembilang.groupby('Program Studi').size().reset_index(name='Pembilang')
+
+    # Gabungkan
+    result = penyebut_prodi.merge(pembilang_prodi, on='Program Studi', how='left')
+    result['Pembilang'] = result['Pembilang'].fillna(0).astype(int)
+    result['Persentase'] = (result['Pembilang'] / result['Penyebut'] * 100).round(2)
+
+    # Bersihkan nama prodi jika ada prefix "Program Studi "
+    result['Program Studi'] = result['Program Studi'].str.replace('Program Studi ', '')
+
+    # Sort berdasarkan persentase
+    result = result.sort_values('Persentase', ascending=True)
+
+    return result
+
+def process_iku_22(df_pembilang, df_penyebut):
+    """
+    Proses data IKU 22 - Mahasiswa yang Meraih Prestasi
+
+    Note: File pembilang tidak memiliki kolom 'Program Studi', perlu join dengan penyebut
+
+    Returns:
+    --------
+    pd.DataFrame dengan kolom: Program Studi, Pembilang, Penyebut, Persentase
+    """
+    # Hitung penyebut per prodi
+    penyebut_prodi = df_penyebut.groupby('Program Studi').size().reset_index(name='Penyebut')
+
+    # Join pembilang dengan penyebut untuk dapat info prodi
+    pembilang_with_prodi = df_pembilang.merge(
+        df_penyebut[['NIM', 'Program Studi']],
+        on='NIM',
+        how='left'
+    )
+
+    # Hitung pembilang per prodi
+    pembilang_prodi = pembilang_with_prodi.groupby('Program Studi').size().reset_index(name='Pembilang')
+
+    # Gabungkan
+    result = penyebut_prodi.merge(pembilang_prodi, on='Program Studi', how='left')
+    result['Pembilang'] = result['Pembilang'].fillna(0).astype(int)
+    result['Persentase'] = (result['Pembilang'] / result['Penyebut'] * 100).round(2)
+
+    # Bersihkan nama prodi jika ada prefix "Program Studi "
+    result['Program Studi'] = result['Program Studi'].str.replace('Program Studi ', '')
+
+    # Sort berdasarkan persentase
+    result = result.sort_values('Persentase', ascending=True)
+
+    return result
+
+def process_iku_23(df_pembilang, df_penyebut):
+    """
+    Proses data IKU 23 - Mahasiswa yang Memiliki HKI
+
+    Note: File menggunakan kolom 'Program Studi'
+
+    Returns:
+    --------
+    pd.DataFrame dengan kolom: Program Studi, Pembilang, Penyebut, Persentase
+    """
+    # Hitung penyebut per prodi
+    penyebut_prodi = df_penyebut.groupby('Program Studi').size().reset_index(name='Penyebut')
+
+    # Hitung pembilang per prodi (sudah ada kolom Program Studi di pembilang)
+    pembilang_prodi = df_pembilang.groupby('Program Studi').size().reset_index(name='Pembilang')
+
+    # Gabungkan
+    result = penyebut_prodi.merge(pembilang_prodi, on='Program Studi', how='left')
+    result['Pembilang'] = result['Pembilang'].fillna(0).astype(int)
+    result['Persentase'] = (result['Pembilang'] / result['Penyebut'] * 100).round(2)
+
+    # Bersihkan nama prodi jika ada prefix "Program Studi "
     result['Program Studi'] = result['Program Studi'].str.replace('Program Studi ', '')
 
     # Sort berdasarkan persentase
@@ -688,14 +908,14 @@ def create_vertical_bar_chart(data, iku_number, target=None):
     jurusan_list = data_sorted['Jurusan'].tolist()
 
     # Buat figure dengan width yang lebih lebar untuk spacing
-    fig_width = max(14, len(prodi_list) * 0.8)  # Dynamic width untuk spacing
+    fig_width = max(14, len(prodi_list) * 1.0)  # Increased spacing: 0.8 -> 1.0
     fig, ax = plt.subplots(figsize=(fig_width, 7))
 
-    # Vertical bars with stronger edges, lebih gendut dan spacing luas
+    # Vertical bars with spacing untuk readability X-axis labels
     x_pos = np.arange(len(prodi_list))
     bars = ax.bar(x_pos, persentase_list, color=colors,
                   edgecolor='#1a1a1a', linewidth=1.5,
-                  alpha=0.88, width=0.9)  # Width 0.9 untuk bar lebih gendut
+                  alpha=0.88, width=0.75)  # Width 0.75 untuk spacing antar bar
 
     # Tambahkan separator antar jurusan dengan garis vertikal
     current_jurusan = None
@@ -720,9 +940,11 @@ def create_vertical_bar_chart(data, iku_number, target=None):
         ax.text(bar.get_x() + bar.get_width()/2., height + 1,
                 label, ha='center', va='bottom', fontsize=10, fontweight='900')
 
-    # Styling
+    # Styling - X-axis labels dengan multi-line wrapping (tidak rotasi)
+    import textwrap
+    wrapped_labels = ['\n'.join(textwrap.wrap(prodi, width=12)) for prodi in prodi_list]
     ax.set_xticks(x_pos)
-    ax.set_xticklabels(prodi_list, rotation=45, ha='right', fontsize=10, fontweight='600')
+    ax.set_xticklabels(wrapped_labels, rotation=0, ha='center', fontsize=10, fontweight='600')
     ax.set_ylabel('Persentase (%)', fontsize=12, fontweight='700')
     ax.set_title(f"{metadata['title']}\n{metadata['subtitle']}",
                  fontsize=13, fontweight='900', pad=15)
@@ -801,6 +1023,12 @@ def create_summary_dashboard(all_stats, all_data):
 
         # Warna soft yang menarik dan bervariasi per IKU
         color_map = {
+            '11': '#5B9BD5',  # Soft blue
+            '12': '#70AD47',  # Soft green
+            '13': '#ED7D31',  # Soft orange
+            '21': '#9966CC',  # Soft purple
+            '22': '#E85D75',  # Soft red/pink
+            '23': '#7F8C8D',  # Soft gray
             '31': '#5B9BD5',  # Soft blue
             '33': '#70AD47',  # Soft green
             '41': '#ED7D31',  # Soft orange
@@ -909,7 +1137,19 @@ def process_single_iku(iku_number):
 
         # 3. Proses data per prodi
         print("  [3/4] Memproses data per program studi...")
-        if iku_number == '31':
+        if iku_number == '11':
+            data = process_iku_11(df_pembilang, df_penyebut)
+        elif iku_number == '12':
+            data = process_iku_12(df_pembilang, df_penyebut)
+        elif iku_number == '13':
+            data = process_iku_13(df_pembilang, df_penyebut)
+        elif iku_number == '21':
+            data = process_iku_21(df_pembilang, df_penyebut)
+        elif iku_number == '22':
+            data = process_iku_22(df_pembilang, df_penyebut)
+        elif iku_number == '23':
+            data = process_iku_23(df_pembilang, df_penyebut)
+        elif iku_number == '31':
             data = process_iku_31(df_pembilang, df_penyebut)
         elif iku_number == '33':
             data = process_iku_33(df_pembilang, df_penyebut)
@@ -964,7 +1204,7 @@ def main():
     all_stats = {}
     all_data = {}
 
-    for iku in ['31', '33', '41', '42']:
+    for iku in ['11', '12', '13', '21', '22', '23', '31', '33', '41', '42']:
         result = process_single_iku(iku)
         if result:
             all_results[iku] = result
@@ -985,12 +1225,24 @@ def main():
 
     try:
         # Import breakdown modules
+        from breakdown.iku_11_breakdown import create_iku_11_breakdown
+        from breakdown.iku_12_breakdown import create_iku_12_breakdown
+        from breakdown.iku_13_breakdown import create_iku_13_breakdown
+        from breakdown.iku_21_breakdown import create_iku_21_breakdown
+        from breakdown.iku_22_breakdown import create_iku_22_breakdown
+        from breakdown.iku_23_breakdown import create_iku_23_breakdown
         from breakdown.iku_31_breakdown import create_iku_31_breakdown
         from breakdown.iku_33_breakdown import create_iku_33_breakdown
         from breakdown.iku_41_breakdown import create_iku_41_breakdown
         from breakdown.iku_42_breakdown import create_iku_42_breakdown
 
         # Generate breakdowns
+        create_iku_11_breakdown()
+        create_iku_12_breakdown()
+        create_iku_13_breakdown()
+        create_iku_21_breakdown()
+        create_iku_22_breakdown()
+        create_iku_23_breakdown()
         create_iku_31_breakdown()
         create_iku_33_breakdown()
         create_iku_41_breakdown()

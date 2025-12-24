@@ -13,7 +13,7 @@ sys.path.append(str(Path(__file__).parent.parent))
 
 import pandas as pd
 from visualization_config import read_excel_iku, setup_publication_style
-from breakdown_utils import create_annotated_bar_chart
+from .breakdown_utils import create_annotated_bar_chart
 
 
 def create_iku_42_praktisi_annotated(df_pembilang):
