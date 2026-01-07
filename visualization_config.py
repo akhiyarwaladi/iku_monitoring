@@ -33,7 +33,7 @@ CONFIG = {
 
     # Export formats
     'export_png': True,
-    'export_svg': True,
+    'export_svg': False,  # Set to True when needed for publication
 
     # Line widths (increased for more professional appearance)
     'axes_linewidth': 1.5,      # Was 0.75 - more prominent axes

@@ -246,7 +246,7 @@ def create_iku_31_statistik_with_jurusan(df_pembilang, df_penyebut):
                   f'Total: {total_kegiatan} kegiatan | {total_dosen_aktif} dosen aktif '
                   f'({persentase_dosen_aktif:.1f}% dari {total_dosen_fst} dosen FST) | '
                   f'Rata-rata: {rata_rata_per_aktif:.1f} kegiatan/dosen')
-    fig.suptitle(main_title, fontsize=13, fontweight='900', y=0.97)
+    fig.suptitle(main_title, fontsize=13, fontweight='900', y=0.96)
 
     # Adjust layout with GridSpec
     gs.tight_layout(fig, rect=[0, 0, 1, 0.94])

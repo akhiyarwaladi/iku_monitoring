@@ -322,9 +322,9 @@ def create_dual_bar_chart(left_data, right_data,
 
     # Main title (match dengan main charts)
     if main_title:
-        fig.suptitle(main_title, fontsize=13, fontweight='900', y=0.98)
+        fig.suptitle(main_title, fontsize=13, fontweight='900', y=0.96)
 
-    plt.tight_layout(rect=[0, 0, 1, 0.95] if main_title else None)
+    plt.tight_layout(rect=[0, 0.02, 1, 0.92] if main_title else None)
 
     # Save
     saved_files = save_figure(fig, filename_base)

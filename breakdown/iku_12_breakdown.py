@@ -139,9 +139,9 @@ def create_iku_12_statistik(df_pembilang, df_penyebut):
     main_title = (f'IKU 12: Statistik Summary - Lulusan yang Melanjutkan Studi\n'
                   f'Total: {total_lulusan_studi} lulusan melanjutkan studi '
                   f'({persentase:.1f}% dari {total_lulusan} lulusan FST)')
-    fig.suptitle(main_title, fontsize=15, fontweight='900', y=0.97)
+    fig.suptitle(main_title, fontsize=15, fontweight='900', y=0.96)
 
-    plt.tight_layout(rect=[0, 0, 1, 0.93])
+    plt.tight_layout(rect=[0, 0.02, 1, 0.90])
 
     saved_files = save_figure(fig, 'IKU_12_breakdown_statistik')
     plt.close()

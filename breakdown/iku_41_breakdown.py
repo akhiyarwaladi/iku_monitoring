@@ -187,9 +187,9 @@ def create_dual_bar_chart_with_jurusan(left_data_with_jurusan, right_data_with_j
 
     # Main title
     if main_title:
-        fig.suptitle(main_title, fontsize=13, fontweight='900', y=0.94)
+        fig.suptitle(main_title, fontsize=13, fontweight='900', y=0.93)
 
-    plt.tight_layout(rect=[0, 0, 1, 0.92])
+    plt.tight_layout(rect=[0, 0.02, 1, 0.88])
 
     # Save
     saved_files = save_figure(fig, filename_base)

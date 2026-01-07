@@ -190,9 +190,9 @@ def create_iku_23_statistik(df_pembilang, df_penyebut):
     main_title = (f'IKU 23: Statistik Summary - Mahasiswa yang Memiliki HKI\n'
                   f'Total: {total_hki} HKI '
                   f'({persentase:.2f}% dari {total_mahasiswa} mahasiswa FST)')
-    fig.suptitle(main_title, fontsize=15, fontweight='900', y=0.97)
+    fig.suptitle(main_title, fontsize=15, fontweight='900', y=0.96)
 
-    plt.tight_layout(rect=[0, 0, 1, 0.93])
+    plt.tight_layout(rect=[0, 0.02, 1, 0.90])
 
     saved_files = save_figure(fig, 'IKU_23_breakdown_statistik')
     plt.close()

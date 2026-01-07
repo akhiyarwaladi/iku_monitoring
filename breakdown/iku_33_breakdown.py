@@ -206,9 +206,9 @@ def create_iku_33_statistik_with_jurusan(df_pembilang, df_penyebut):
     main_title = (f'IKU 33: Statistik Summary - Bimbingan Mahasiswa Luar Prodi\n'
                   f'Total: {total_mahasiswa} mahasiswa | {total_dosen_aktif} dosen '
                   f'({persentase_dosen:.1f}% dari {total_dosen_fst} dosen FST)')
-    fig.suptitle(main_title, fontsize=13, fontweight='900', y=0.98)
+    fig.suptitle(main_title, fontsize=13, fontweight='900', y=0.97)
 
-    plt.tight_layout(rect=[0, 0, 1, 0.95])
+    plt.tight_layout(rect=[0, 0.02, 1, 0.92])
 
     saved_files = save_figure(fig, 'IKU_33_breakdown_statistik')
     plt.close()
